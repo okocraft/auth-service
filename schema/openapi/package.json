@@ -1,0 +1,22 @@
+{
+  "name": "auth-openapi",
+  "version": "1.0.0",
+  "private": true,
+  "author": "Siroshun09",
+  "license": "Apache-2.0",
+  "packageManager": "pnpm@10.18.2",
+  "scripts": {
+    "gen": "pnpm run gen:format && pnpm run gen:schema && pnpm run gen:copy",
+    "gen:format": "tsp format \"**/*.tsp\"",
+    "gen:schema": "tsp compile . --emit=@typespec/openapi3",
+    "gen:copy": "node -e \"require('fs').copyFileSync('./tsp-output/@typespec/openapi3/openapi.yaml', 'openapi.yaml')\""
+  },
+  "devDependencies": {
+    "@typespec/compiler": "1.5.0",
+    "@typespec/http": "1.5.0",
+    "@typespec/openapi": "1.5.0",
+    "@typespec/openapi3": "1.5.0",
+    "@typespec/rest": "0.75.0",
+    "@typespec/versioning": "0.75.0"
+  }
+}
