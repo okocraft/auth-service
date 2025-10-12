@@ -1,0 +1,163 @@
+openapi: 3.0.0
+info:
+  title: Auth API
+  version: v1.0
+tags:
+  - name: AuthAPI
+  - name: GoogleAuthAPI
+paths:
+  /google/callback:
+    get:
+      operationId: callbackFromGoogle
+      description: Callback from Google
+      parameters: []
+      responses:
+        '307':
+          description: Redirection
+        '404':
+          description: The server cannot find the requested resource.
+      tags:
+        - GoogleAuthAPI
+  /google/link:
+    post:
+      operationId: linkWithGoogle
+      description: First login with Google Account
+      parameters: []
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleLoginResponse'
+        '404':
+          description: The server cannot find the requested resource.
+      tags:
+        - GoogleAuthAPI
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GoogleFirstLoginRequest'
+  /google/login:
+    post:
+      operationId: loginWithGoogle
+      description: Login with Google Account
+      parameters: []
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleLoginResponse'
+        '404':
+          description: The server cannot find the requested resource.
+      tags:
+        - GoogleAuthAPI
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GoogleLoginRequest'
+  /logout:
+    post:
+      operationId: logout
+      description: Invalidate refresh_token and access_token
+      parameters:
+        - name: refresh_token
+          in: cookie
+          required: true
+          schema:
+            type: string
+          explode: false
+        - name: X-CSRF-Token
+          in: header
+          required: false
+          schema:
+            type: string
+      responses:
+        '204':
+          description: 'There is no content to send for this request, but the headers may be useful. '
+      tags:
+        - AuthAPI
+  /refresh:
+    post:
+      operationId: refreshAccessToken
+      description: Refresh access token
+      parameters:
+        - name: refresh_token
+          in: cookie
+          required: true
+          schema:
+            type: string
+          explode: false
+        - name: X-CSRF-Token
+          in: header
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccessTokenResponse'
+        '401':
+          description: Access is unauthorized.
+      tags:
+        - AuthAPI
+components:
+  schemas:
+    AccessTokenResponse:
+      type: object
+      required:
+        - access_token
+      properties:
+        access_token:
+          type: string
+          description: the access token
+    GoogleFirstLoginRequest:
+      type: object
+      required:
+        - login_key
+      properties:
+        login_key:
+          type: string
+          format: url
+          description: the login key
+    GoogleLoginRequest:
+      type: object
+      required:
+        - current_url
+      properties:
+        current_url:
+          type: string
+          format: url
+          description: the url of the page currently being viewed
+    GoogleLoginResponse:
+      type: object
+      required:
+        - redirect_url
+      properties:
+        redirect_url:
+          type: string
+          format: url
+          description: the Google's login page URL
+    GoogleLoginResult:
+      type: string
+      enum:
+        - success
+        - not_enabled
+        - invalid_token
+        - user_not_found
+        - login_key_not_found
+        - already_linked
+        - internal_error
+    Versions:
+      type: string
+      enum:
+        - v1.0
