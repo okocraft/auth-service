@@ -1,0 +1,11 @@
+version: "2"
+sql:
+  - engine: "mysql"
+    queries: "queries/*.sql"
+    schema: "../../../schema/database/schema.sql"
+    gen:
+      go:
+        package: "queries"
+        sql_package: "database/sql"
+        emit_db_tags: true
+        out: "../../repositories/queries"
