@@ -1,0 +1,56 @@
+services:
+  auth_service_db:
+    image: mariadb:12.0.2@sha256:5b6a1eac15b85b981a61afb89aea2a22bf76b5f58809d05f0bcc13ab6ec44cb8
+    volumes:
+      - ./init-db/:/docker-entrypoint-initdb.d/
+      - ./.data/mysql/:/var/lib/mysql
+    environment:
+      MARIADB_RANDOM_ROOT_PASSWORD: true
+      MYSQL_USER: auth_service_user
+      MYSQL_PASSWORD: auth_service_pw
+    ports:
+      - "3306:3306"
+    networks:
+      - auth_service_db
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      start_period: 10s
+      interval: 10s
+      timeout: 5s
+      retries: 3
+  auth_service_db_migration:
+    image: arigaio/atlas:0.37.0-community-alpine@sha256:370b449f062db69db93a2acbe497efe0a3fb3a0466e3b0e0f7f29e1a94fe1e7d
+    command: >
+      schema apply
+      --auto-approve
+      --url "maria://auth_service_user:auth_service_pw@auth_service_db:3306/auth_service_db"
+      --to file:///schema/schema.sql
+      --dev-url "maria://auth_service_user:auth_service_pw@auth_service_db:3306/auth_service_dev"
+    networks:
+      - auth_service_db
+    depends_on:
+      auth_service_db:
+        condition: service_healthy
+    volumes:
+      - ../schema/database:/schema
+  auth_service_http:
+    image: auth_service_http:latest
+    ports:
+      - "3000:3000"
+    networks:
+      - auth_service_db
+    depends_on:
+      auth_service_db:
+        condition: service_healthy
+    environment:
+      AUTH_SERVICE_DB_HOST: auth_service_db
+      AUTH_SERVICE_DB_PORT: 3306
+      AUTH_SERVICE_DB_USER: auth_service_user
+      AUTH_SERVICE_DB_PASSWORD: auth_service_pw
+      AUTH_SERVICE_DB_NAME: auth_service_db
+      AUTH_SERVICE_HTTP_PORT: 3000
+    env_file: "http-server.env"
+
+networks:
+  auth_service_db:
+    driver: bridge
