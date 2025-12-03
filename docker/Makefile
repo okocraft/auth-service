@@ -1,8 +1,8 @@
-build-image:
-	./build.sh $(CMD_NAME) $(IMAGE_NAME)
+build-app-image:
+	./build_app.sh $(CMD_NAME) $(IMAGE_NAME)
 
 build-http-server:
-	$(MAKE) build-image CMD_NAME=http-server IMAGE_NAME=auth_service_http
+	$(MAKE) build-app-image CMD_NAME=http-server IMAGE_NAME=auth_service_http
 
 run-service:
 	docker compose up -d --no-deps $(SERVICE_NAME)
