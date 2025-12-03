@@ -17,7 +17,7 @@ func TestGetProjectRoot(t *testing.T) {
 	}{
 		{
 			name:    "success",
-			want:    "../../",
+			want:    "../../../../",
 			wantErr: assert.NoError,
 		},
 	}

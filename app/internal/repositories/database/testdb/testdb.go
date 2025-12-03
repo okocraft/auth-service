@@ -74,7 +74,7 @@ func createTables(db *sql.DB) error {
 		return serrors.WithStackTrace(err)
 	}
 
-	schema, err := os.ReadFile(filepath.Join(rootDir, "schema/database/schema.sql"))
+	schema, err := os.ReadFile(filepath.Join(rootDir, "../schema/database/schema.sql"))
 	if err != nil {
 		return serrors.WithStackTrace(err)
 	}
