@@ -11,8 +11,8 @@ github.com/Siroshun09/logs/logmock v1.0.0 h1:rvqaMrw8o9aNHWcqCrrMEnkRT0SJ6kpCbo3
 github.com/Siroshun09/logs/logmock v1.0.0/go.mod h1:eoAecP2NHVB89pg9zIPn2PvMW/iTRmy7MVI5WsMeGuU=
 github.com/Siroshun09/serrors v1.4.0 h1:YhQGvqAZI6f8Xr27Ddwwdxn3GVHBrd1j03ziAq6WZfU=
 github.com/Siroshun09/serrors v1.4.0/go.mod h1:+7CbxH0gjS9Ly2eqOir9lLe1a0SU0u85MPNC5r0WVho=
-github.com/Siroshun09/serrors/errorlogs v1.1.0 h1:QM6J6+6J9+lKFZp0AzyA+PGhh9qTSIxheu9qpqY17gc=
-github.com/Siroshun09/serrors/errorlogs v1.1.0/go.mod h1:PwX3odh2G6Z4VXAP4zNG5kCLpSLyb9v7wOqZITxaIIc=
+github.com/Siroshun09/serrors/errorlogs v1.2.0 h1:3zwLPC9u7vBG8cmwFfm2nRWKlFgrEzB3sYsVti569wU=
+github.com/Siroshun09/serrors/errorlogs v1.2.0/go.mod h1:PwX3odh2G6Z4VXAP4zNG5kCLpSLyb9v7wOqZITxaIIc=
 github.com/apapsch/go-jsonmerge/v2 v2.0.0 h1:axGnT1gRIfimI7gJifB699GoE/oq+F2MU7Dml6nw9rQ=
 github.com/apapsch/go-jsonmerge/v2 v2.0.0/go.mod h1:lvDnEdqiQrp0O42VQGgmlKpxL1AP2+08jFMw88y4klk=
 github.com/bmatcuk/doublestar v1.1.1/go.mod h1:UD6OnuiIn0yFxxA2le/rnRU1G4RaI4UvFv1sNto9p6w=
