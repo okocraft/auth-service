@@ -1,4 +1,4 @@
-package auth
+package jwtclaims
 
 import (
 	"github.com/Siroshun09/serrors"

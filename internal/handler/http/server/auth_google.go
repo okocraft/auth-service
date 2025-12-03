@@ -12,7 +12,7 @@ import (
 
 	"github.com/Siroshun09/go-httplib"
 	"github.com/Siroshun09/logs"
-	"github.com/okocraft/auth-service/api/auth"
+	"github.com/okocraft/auth-service/api/jwtclaims"
 	"github.com/okocraft/auth-service/api/user"
 	"github.com/okocraft/auth-service/internal/config"
 	"github.com/okocraft/auth-service/internal/domain"
@@ -136,11 +136,11 @@ func (h googleAuthHandler) CallbackFromGoogle(w http.ResponseWriter, r *http.Req
 	var encryptedVerifier string
 	var callbackHandleFunc func(ctx context.Context, w http.ResponseWriter, r *http.Request, openID string)
 	switch claimType {
-	case auth.LoginStateClaimTypeUnknown:
+	case jwtclaims.LoginStateClaimTypeUnknown:
 		h.redirectToResultPage(ctx, w, r, oapi.GoogleLoginResultInvalidToken)
 		return
-	case auth.LoginStateClaimTypeLogin:
-		loginStateClaims, err := auth.ReadLoginStateClaimsFrom(claims)
+	case jwtclaims.LoginStateClaimTypeLogin:
+		loginStateClaims, err := jwtclaims.ReadLoginStateClaimsFrom(claims)
 		if err != nil {
 			h.redirectToResultPage(ctx, w, r, oapi.GoogleLoginResultInvalidToken)
 			return
@@ -150,8 +150,8 @@ func (h googleAuthHandler) CallbackFromGoogle(w http.ResponseWriter, r *http.Req
 		callbackHandleFunc = func(ctx context.Context, w http.ResponseWriter, r *http.Request, openID string) {
 			h.handleLoginCallback(w, r, openID, loginStateClaims.CurrentPageURL)
 		}
-	case auth.LoginStateClaimTypeFirstLogin:
-		firstLoginStateClaims, err := auth.ReadFirstLoginStateClaimsFrom(claims)
+	case jwtclaims.LoginStateClaimTypeFirstLogin:
+		firstLoginStateClaims, err := jwtclaims.ReadFirstLoginStateClaimsFrom(claims)
 		if err != nil {
 			h.redirectToResultPage(ctx, w, r, oapi.GoogleLoginResultInvalidToken)
 			return

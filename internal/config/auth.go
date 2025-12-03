@@ -6,12 +6,12 @@ import (
 
 	"github.com/Siroshun09/serrors"
 	"github.com/golang-jwt/jwt/v5"
-	"github.com/okocraft/auth-service/api/auth"
+	"github.com/okocraft/auth-service/api/jwtclaims"
 )
 
 type AuthConfig struct {
-	Encrypter                  auth.Encrypter
-	JWTSigner                  auth.JWTSigner
+	Encrypter                  jwtclaims.Encrypter
+	JWTSigner                  jwtclaims.JWTSigner
 	LoginExpireDuration        time.Duration
 	AccessTokenExpireDuration  time.Duration
 	RefreshTokenExpireDuration time.Duration
@@ -30,12 +30,12 @@ func NewAuthConfigFromEnv() (AuthConfig, error) {
 		return AuthConfig{}, serrors.New("AUTH_SERVICE_PRIVATE_KEY must be hex value of 32 bytes long")
 	}
 
-	encrypter, err := auth.NewAESEncrypter(privateKey)
+	encrypter, err := jwtclaims.NewAESEncrypter(privateKey)
 	if err != nil {
 		return AuthConfig{}, serrors.Errorf("failed to create encrypter: %w", err)
 	}
 
-	jwtSigner := auth.NewJWTSigner(jwt.SigningMethodHS512, privateKey)
+	jwtSigner := jwtclaims.NewJWTSigner(jwt.SigningMethodHS512, privateKey)
 
 	loginExpire, err := getDurationFromEnv("AUTH_SERVICE_LOGIN_EXPIRE", 15*time.Minute)
 	if err != nil {

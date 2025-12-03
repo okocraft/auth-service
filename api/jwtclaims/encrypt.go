@@ -1,4 +1,4 @@
-package auth
+package jwtclaims
 
 import (
 	"crypto/aes"

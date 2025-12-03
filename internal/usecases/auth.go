@@ -10,7 +10,7 @@ import (
 	"time"
 
 	"github.com/gofrs/uuid/v5"
-	"github.com/okocraft/auth-service/api/auth"
+	"github.com/okocraft/auth-service/api/jwtclaims"
 	"github.com/okocraft/auth-service/api/user"
 	"github.com/okocraft/auth-service/internal/config"
 	"github.com/okocraft/auth-service/internal/domain"
@@ -24,13 +24,13 @@ import (
 type AuthUsecase interface {
 	CreateStateJWT(ctx context.Context, currentPageURL string, codeVerifier string) (string, error)
 	CreateStateJWTWithLoginKey(ctx context.Context, loginKey domain.LoginKey, codeVerifier string) (string, error)
-	VerifyStateJWT(ctx context.Context, tokenString string) (auth.LoginStateClaimType, jwt.MapClaims, error)
+	VerifyStateJWT(ctx context.Context, tokenString string) (jwtclaims.LoginStateClaimType, jwt.MapClaims, error)
 	GetUserIDAndRefreshTokenIDFromJTI(ctx context.Context, jti uuid.UUID) (user.ID, int64, error)
 	DecryptCodeVerifier(ctx context.Context, encryptedCodeVerifier string) (string, error)
 	CreateRefreshToken(ctx context.Context, userID user.ID) (uuid.UUID, string, time.Time, error)
-	VerifyRefreshToken(ctx context.Context, tokenString string) (auth.RefreshTokenClaims, error)
+	VerifyRefreshToken(ctx context.Context, tokenString string) (jwtclaims.RefreshTokenClaims, error)
 	RefreshToken(ctx context.Context, params domain.RefreshTokenParams) (domain.RefreshedToken, error)
-	InvalidateTokens(ctx context.Context, refreshTokenClaims auth.RefreshTokenClaims) error
+	InvalidateTokens(ctx context.Context, refreshTokenClaims jwtclaims.RefreshTokenClaims) error
 	CreateLoginKey(ctx context.Context, userID user.ID) (domain.LoginKey, error)
 }
 
@@ -64,8 +64,8 @@ func (u authUsecase) CreateStateJWT(_ context.Context, currentPageURL string, co
 	createdAt := time.Now()
 	expiresAt := createdAt.Add(u.conf.LoginExpireDuration)
 
-	state := auth.LoginStateClaims{
-		BaseClaims: auth.BaseClaims{
+	state := jwtclaims.LoginStateClaims{
+		BaseClaims: jwtclaims.BaseClaims{
 			JTI:       id,
 			NotBefore: time.Now(),
 			ExpiresAt: expiresAt,
@@ -96,8 +96,8 @@ func (u authUsecase) CreateStateJWTWithLoginKey(_ context.Context, loginKey doma
 	createdAt := time.Now()
 	expiresAt := createdAt.Add(u.conf.LoginExpireDuration)
 
-	state := auth.FirstLoginStateClaims{
-		BaseClaims: auth.BaseClaims{
+	state := jwtclaims.FirstLoginStateClaims{
+		BaseClaims: jwtclaims.BaseClaims{
 			JTI:       id,
 			NotBefore: time.Now(),
 			ExpiresAt: expiresAt,
@@ -114,13 +114,13 @@ func (u authUsecase) CreateStateJWTWithLoginKey(_ context.Context, loginKey doma
 	return tokenString, nil
 }
 
-func (u authUsecase) VerifyStateJWT(_ context.Context, tokenString string) (auth.LoginStateClaimType, jwt.MapClaims, error) {
+func (u authUsecase) VerifyStateJWT(_ context.Context, tokenString string) (jwtclaims.LoginStateClaimType, jwt.MapClaims, error) {
 	claims, err := u.conf.JWTSigner.VerifyAndParse(tokenString)
 	if err != nil {
-		return auth.LoginStateClaimTypeUnknown, nil, serrors.WithStackTrace(err)
+		return jwtclaims.LoginStateClaimTypeUnknown, nil, serrors.WithStackTrace(err)
 	}
 
-	claimType := auth.GetLoginStateClaimType(claims)
+	claimType := jwtclaims.GetLoginStateClaimType(claims)
 	return claimType, claims, nil
 }
 
@@ -167,8 +167,8 @@ func (u authUsecase) CreateRefreshToken(ctx context.Context, userID user.ID) (uu
 		return uuid.Nil, "", time.Time{}, serrors.WithStackTrace(err)
 	}
 
-	refreshToken := auth.RefreshTokenClaims{
-		BaseClaims: auth.BaseClaims{
+	refreshToken := jwtclaims.RefreshTokenClaims{
+		BaseClaims: jwtclaims.BaseClaims{
 			JTI:       refreshTokenJTI,
 			NotBefore: createdAt,
 			ExpiresAt: expiresAt,
@@ -184,19 +184,19 @@ func (u authUsecase) CreateRefreshToken(ctx context.Context, userID user.ID) (uu
 	return loginID, refreshTokenString, createdAt, nil
 }
 
-func (u authUsecase) VerifyRefreshToken(_ context.Context, tokenString string) (auth.RefreshTokenClaims, error) {
+func (u authUsecase) VerifyRefreshToken(_ context.Context, tokenString string) (jwtclaims.RefreshTokenClaims, error) {
 	claims, err := u.conf.JWTSigner.VerifyAndParse(tokenString)
 	if err != nil {
-		return auth.RefreshTokenClaims{}, serrors.WithStackTrace(err)
+		return jwtclaims.RefreshTokenClaims{}, serrors.WithStackTrace(err)
 	}
 
-	refreshTokenClaims, err := auth.ReadRefreshTokenClaimsFrom(claims)
+	refreshTokenClaims, err := jwtclaims.ReadRefreshTokenClaimsFrom(claims)
 	if err != nil {
-		return auth.RefreshTokenClaims{}, serrors.WithStackTrace(err)
+		return jwtclaims.RefreshTokenClaims{}, serrors.WithStackTrace(err)
 	}
 
 	if err := refreshTokenClaims.Validate(time.Now()); err != nil {
-		return auth.RefreshTokenClaims{}, serrors.WithStackTrace(err)
+		return jwtclaims.RefreshTokenClaims{}, serrors.WithStackTrace(err)
 	}
 
 	return refreshTokenClaims, nil
@@ -237,8 +237,8 @@ func (u authUsecase) RefreshToken(ctx context.Context, params domain.RefreshToke
 		return domain.RefreshedToken{}, serrors.WithStackTrace(err)
 	}
 
-	refreshToken := auth.RefreshTokenClaims{
-		BaseClaims: auth.BaseClaims{
+	refreshToken := jwtclaims.RefreshTokenClaims{
+		BaseClaims: jwtclaims.BaseClaims{
 			JTI:       refreshTokenJTI,
 			NotBefore: createdAt,
 			ExpiresAt: expiresAt,
@@ -246,8 +246,8 @@ func (u authUsecase) RefreshToken(ctx context.Context, params domain.RefreshToke
 		LoginID: params.LoginID,
 	}
 
-	accessToken := auth.AccessTokenClaims{
-		BaseClaims: auth.BaseClaims{
+	accessToken := jwtclaims.AccessTokenClaims{
+		BaseClaims: jwtclaims.BaseClaims{
 			JTI:       accessTokenJTI,
 			NotBefore: createdAt,
 			ExpiresAt: expiresAt,
@@ -271,7 +271,7 @@ func (u authUsecase) RefreshToken(ctx context.Context, params domain.RefreshToke
 	}, nil
 }
 
-func (u authUsecase) InvalidateTokens(ctx context.Context, refreshTokenClaims auth.RefreshTokenClaims) error {
+func (u authUsecase) InvalidateTokens(ctx context.Context, refreshTokenClaims jwtclaims.RefreshTokenClaims) error {
 	err := u.db.WithTx(ctx, func(ctx context.Context, tx database.Connection) error {
 		err := u.repo.DeleteAccessTokensByLoginID(ctx, tx, refreshTokenClaims.LoginID)
 		if err != nil {
