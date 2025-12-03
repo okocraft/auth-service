@@ -1,8 +1,6 @@
 name: Image build for App
 on:
   push:
-    branches:
-      - main
 
 jobs:
   build:
