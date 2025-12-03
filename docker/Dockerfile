@@ -1,6 +1,4 @@
-FROM gcr.io/distroless/static-debian12 AS base
-
-FROM base AS http-server
+FROM gcr.io/distroless/static-debian12 AS http-server
 
 COPY ./bin/http-server /
 
