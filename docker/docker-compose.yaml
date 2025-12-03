@@ -1,6 +1,6 @@
 services:
   auth_service_db:
-    image: mariadb:12.0.2@sha256:607835cd628b78e2876f6a586d0ec37b296c47683b31ef750002d3d17d3d8f7a
+    image: mariadb:12.1.2@sha256:e1bcd6f85781f4a875abefb11c4166c1d79e4237c23de597bf0df81fec225b40
     volumes:
       - ./init-db/:/docker-entrypoint-initdb.d/
       - ./.data/mysql/:/var/lib/mysql
@@ -19,7 +19,7 @@ services:
       timeout: 5s
       retries: 3
   auth_service_db_migration:
-    image: arigaio/atlas:0.37.0-community-alpine@sha256:370b449f062db69db93a2acbe497efe0a3fb3a0466e3b0e0f7f29e1a94fe1e7d
+    image: arigaio/atlas:0.38.0-community-alpine@sha256:69444c44997a19eba2760734343c23fffcfabd125787113c7ae4c1945d89b9b2
     command: >
       schema apply
       --auto-approve
