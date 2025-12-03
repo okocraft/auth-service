@@ -12,12 +12,12 @@ import (
 
 	"github.com/Siroshun09/go-httplib"
 	"github.com/Siroshun09/logs"
-	"github.com/okocraft/auth-service/api/jwtclaims"
-	"github.com/okocraft/auth-service/api/user"
 	"github.com/okocraft/auth-service/internal/config"
 	"github.com/okocraft/auth-service/internal/domain"
 	"github.com/okocraft/auth-service/internal/handler/http/oapi"
 	"github.com/okocraft/auth-service/internal/usecases"
+	"github.com/okocraft/authlib/jwtclaims"
+	"github.com/okocraft/authlib/user"
 	"golang.org/x/oauth2"
 	"golang.org/x/oauth2/google"
 )

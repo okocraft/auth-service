@@ -7,10 +7,10 @@ import (
 	"time"
 
 	"github.com/gofrs/uuid/v5"
-	"github.com/okocraft/auth-service/api/user"
 	"github.com/okocraft/auth-service/internal/domain"
 	"github.com/okocraft/auth-service/internal/repositories/database"
 	"github.com/okocraft/auth-service/internal/repositories/queries"
+	"github.com/okocraft/authlib/user"
 )
 
 type AuthRepository interface {

@@ -4,10 +4,10 @@ import (
 	"context"
 
 	"github.com/Siroshun09/serrors"
-	"github.com/okocraft/auth-service/api/user"
 	"github.com/okocraft/auth-service/internal/domain"
 	"github.com/okocraft/auth-service/internal/repositories"
 	"github.com/okocraft/auth-service/internal/repositories/database"
+	"github.com/okocraft/authlib/user"
 )
 
 type AccessLogUsecase interface {

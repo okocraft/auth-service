@@ -10,12 +10,12 @@ import (
 	"time"
 
 	"github.com/gofrs/uuid/v5"
-	"github.com/okocraft/auth-service/api/jwtclaims"
-	"github.com/okocraft/auth-service/api/user"
 	"github.com/okocraft/auth-service/internal/config"
 	"github.com/okocraft/auth-service/internal/domain"
 	"github.com/okocraft/auth-service/internal/repositories"
 	"github.com/okocraft/auth-service/internal/repositories/database"
+	"github.com/okocraft/authlib/jwtclaims"
+	"github.com/okocraft/authlib/user"
 
 	"github.com/Siroshun09/serrors"
 	"github.com/golang-jwt/jwt/v5"

@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"github.com/gofrs/uuid/v5"
-	"github.com/okocraft/auth-service/api/user"
+	"github.com/okocraft/authlib/user"
 )
 
 type AccessLogActionType int8
