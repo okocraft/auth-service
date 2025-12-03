@@ -1,6 +1,10 @@
 name: Image build for App
 on:
   push:
+    paths:
+      - '.github/workflows/image_build_app.yml'
+      - 'app/**'
+      - 'docker/**'
 
 jobs:
   build:
