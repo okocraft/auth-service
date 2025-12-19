@@ -9,20 +9,20 @@ importers:
   .:
     devDependencies:
       '@typespec/compiler':
-        specifier: 1.7.0
-        version: 1.7.0
+        specifier: 1.7.1
+        version: 1.7.1
       '@typespec/http':
         specifier: 1.7.0
-        version: 1.7.0(@typespec/compiler@1.7.0)
+        version: 1.7.0(@typespec/compiler@1.7.1)
       '@typespec/openapi':
         specifier: 1.7.0
-        version: 1.7.0(@typespec/compiler@1.7.0)(@typespec/http@1.7.0(@typespec/compiler@1.7.0))
+        version: 1.7.0(@typespec/compiler@1.7.1)(@typespec/http@1.7.0(@typespec/compiler@1.7.1))
       '@typespec/openapi3':
         specifier: 1.7.0
-        version: 1.7.0(@typespec/compiler@1.7.0)(@typespec/http@1.7.0(@typespec/compiler@1.7.0))(@typespec/openapi@1.7.0(@typespec/compiler@1.7.0)(@typespec/http@1.7.0(@typespec/compiler@1.7.0)))(@typespec/versioning@0.77.0(@typespec/compiler@1.7.0))
+        version: 1.7.0(@typespec/compiler@1.7.1)(@typespec/http@1.7.0(@typespec/compiler@1.7.1))(@typespec/openapi@1.7.0(@typespec/compiler@1.7.1)(@typespec/http@1.7.0(@typespec/compiler@1.7.1)))(@typespec/versioning@0.77.0(@typespec/compiler@1.7.1))
       '@typespec/versioning':
         specifier: 0.77.0
-        version: 0.77.0(@typespec/compiler@1.7.0)
+        version: 0.77.0(@typespec/compiler@1.7.1)
 
 packages:
 
@@ -218,8 +218,8 @@ packages:
     peerDependencies:
       '@typespec/compiler': ^1.7.0
 
-  '@typespec/compiler@1.7.0':
-    resolution: {integrity: sha512-KE2t5I7u/33M/nsIxdng06FUPrqaGSbMsSEsv51eMwYnj3v1+Z3qTTX/dxHAXRXHcfadNlX/NtyAKju+pkMTFQ==}
+  '@typespec/compiler@1.7.1':
+    resolution: {integrity: sha512-sb3MEsKjFlAx8ZG484exs5Ec+JwmYf2anJqLjMusrV3rRMUhv3fbEulk9MD+l4eOkBS46VMNGqRu0wTn8suVVA==}
     engines: {node: '>=20.0.0'}
     hasBin: true
 
@@ -696,11 +696,11 @@ snapshots:
 
   '@sindresorhus/merge-streams@4.0.0': {}
 
-  '@typespec/asset-emitter@0.77.0(@typespec/compiler@1.7.0)':
+  '@typespec/asset-emitter@0.77.0(@typespec/compiler@1.7.1)':
     dependencies:
-      '@typespec/compiler': 1.7.0
+      '@typespec/compiler': 1.7.1
 
-  '@typespec/compiler@1.7.0':
+  '@typespec/compiler@1.7.1':
     dependencies:
       '@babel/code-frame': 7.27.1
       '@inquirer/prompts': 8.0.2
@@ -722,31 +722,31 @@ snapshots:
     transitivePeerDependencies:
       - '@types/node'
 
-  '@typespec/http@1.7.0(@typespec/compiler@1.7.0)':
+  '@typespec/http@1.7.0(@typespec/compiler@1.7.1)':
     dependencies:
-      '@typespec/compiler': 1.7.0
+      '@typespec/compiler': 1.7.1
 
-  '@typespec/openapi3@1.7.0(@typespec/compiler@1.7.0)(@typespec/http@1.7.0(@typespec/compiler@1.7.0))(@typespec/openapi@1.7.0(@typespec/compiler@1.7.0)(@typespec/http@1.7.0(@typespec/compiler@1.7.0)))(@typespec/versioning@0.77.0(@typespec/compiler@1.7.0))':
+  '@typespec/openapi3@1.7.0(@typespec/compiler@1.7.1)(@typespec/http@1.7.0(@typespec/compiler@1.7.1))(@typespec/openapi@1.7.0(@typespec/compiler@1.7.1)(@typespec/http@1.7.0(@typespec/compiler@1.7.1)))(@typespec/versioning@0.77.0(@typespec/compiler@1.7.1))':
     dependencies:
       '@scalar/json-magic': 0.8.5
       '@scalar/openapi-parser': 0.23.6
       '@scalar/openapi-types': 0.5.1
-      '@typespec/asset-emitter': 0.77.0(@typespec/compiler@1.7.0)
-      '@typespec/compiler': 1.7.0
-      '@typespec/http': 1.7.0(@typespec/compiler@1.7.0)
-      '@typespec/openapi': 1.7.0(@typespec/compiler@1.7.0)(@typespec/http@1.7.0(@typespec/compiler@1.7.0))
+      '@typespec/asset-emitter': 0.77.0(@typespec/compiler@1.7.1)
+      '@typespec/compiler': 1.7.1
+      '@typespec/http': 1.7.0(@typespec/compiler@1.7.1)
+      '@typespec/openapi': 1.7.0(@typespec/compiler@1.7.1)(@typespec/http@1.7.0(@typespec/compiler@1.7.1))
       yaml: 2.8.1
     optionalDependencies:
-      '@typespec/versioning': 0.77.0(@typespec/compiler@1.7.0)
+      '@typespec/versioning': 0.77.0(@typespec/compiler@1.7.1)
 
-  '@typespec/openapi@1.7.0(@typespec/compiler@1.7.0)(@typespec/http@1.7.0(@typespec/compiler@1.7.0))':
+  '@typespec/openapi@1.7.0(@typespec/compiler@1.7.1)(@typespec/http@1.7.0(@typespec/compiler@1.7.1))':
     dependencies:
-      '@typespec/compiler': 1.7.0
-      '@typespec/http': 1.7.0(@typespec/compiler@1.7.0)
+      '@typespec/compiler': 1.7.1
+      '@typespec/http': 1.7.0(@typespec/compiler@1.7.1)
 
-  '@typespec/versioning@0.77.0(@typespec/compiler@1.7.0)':
+  '@typespec/versioning@0.77.0(@typespec/compiler@1.7.1)':
     dependencies:
-      '@typespec/compiler': 1.7.0
+      '@typespec/compiler': 1.7.1
 
   ajv-draft-04@1.0.0(ajv@8.17.1):
     optionalDependencies:
