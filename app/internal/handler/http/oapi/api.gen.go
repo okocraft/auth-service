@@ -78,19 +78,19 @@ type LoginWithGoogleJSONRequestBody = GoogleLoginRequest
 // ServerInterface represents all server handlers.
 type ServerInterface interface {
 
-	// (GET /google/callback)
-	CallbackFromGoogle(w http.ResponseWriter, r *http.Request)
-
-	// (POST /google/link)
-	LinkWithGoogle(w http.ResponseWriter, r *http.Request)
-
-	// (POST /google/login)
-	LoginWithGoogle(w http.ResponseWriter, r *http.Request)
-
-	// (POST /logout)
+	// (POST /auth/logout)
 	Logout(w http.ResponseWriter, r *http.Request, params LogoutParams)
 
-	// (POST /refresh)
+	// (GET /auth/oauth/google/callback)
+	CallbackFromGoogle(w http.ResponseWriter, r *http.Request)
+
+	// (POST /auth/oauth/google/link)
+	LinkWithGoogle(w http.ResponseWriter, r *http.Request)
+
+	// (POST /auth/oauth/google/login)
+	LoginWithGoogle(w http.ResponseWriter, r *http.Request)
+
+	// (POST /auth/refresh)
 	RefreshAccessToken(w http.ResponseWriter, r *http.Request, params RefreshAccessTokenParams)
 }
 
@@ -98,27 +98,27 @@ type ServerInterface interface {
 
 type Unimplemented struct{}
 
-// (GET /google/callback)
-func (_ Unimplemented) CallbackFromGoogle(w http.ResponseWriter, r *http.Request) {
-	w.WriteHeader(http.StatusNotImplemented)
-}
-
-// (POST /google/link)
-func (_ Unimplemented) LinkWithGoogle(w http.ResponseWriter, r *http.Request) {
-	w.WriteHeader(http.StatusNotImplemented)
-}
-
-// (POST /google/login)
-func (_ Unimplemented) LoginWithGoogle(w http.ResponseWriter, r *http.Request) {
-	w.WriteHeader(http.StatusNotImplemented)
-}
-
-// (POST /logout)
+// (POST /auth/logout)
 func (_ Unimplemented) Logout(w http.ResponseWriter, r *http.Request, params LogoutParams) {
 	w.WriteHeader(http.StatusNotImplemented)
 }
 
-// (POST /refresh)
+// (GET /auth/oauth/google/callback)
+func (_ Unimplemented) CallbackFromGoogle(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusNotImplemented)
+}
+
+// (POST /auth/oauth/google/link)
+func (_ Unimplemented) LinkWithGoogle(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusNotImplemented)
+}
+
+// (POST /auth/oauth/google/login)
+func (_ Unimplemented) LoginWithGoogle(w http.ResponseWriter, r *http.Request) {
+	w.WriteHeader(http.StatusNotImplemented)
+}
+
+// (POST /auth/refresh)
 func (_ Unimplemented) RefreshAccessToken(w http.ResponseWriter, r *http.Request, params RefreshAccessTokenParams) {
 	w.WriteHeader(http.StatusNotImplemented)
 }
@@ -131,48 +131,6 @@ type ServerInterfaceWrapper struct {
 }
 
 type MiddlewareFunc func(http.Handler) http.Handler
-
-// CallbackFromGoogle operation middleware
-func (siw *ServerInterfaceWrapper) CallbackFromGoogle(w http.ResponseWriter, r *http.Request) {
-
-	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		siw.Handler.CallbackFromGoogle(w, r)
-	}))
-
-	for _, middleware := range siw.HandlerMiddlewares {
-		handler = middleware(handler)
-	}
-
-	handler.ServeHTTP(w, r)
-}
-
-// LinkWithGoogle operation middleware
-func (siw *ServerInterfaceWrapper) LinkWithGoogle(w http.ResponseWriter, r *http.Request) {
-
-	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		siw.Handler.LinkWithGoogle(w, r)
-	}))
-
-	for _, middleware := range siw.HandlerMiddlewares {
-		handler = middleware(handler)
-	}
-
-	handler.ServeHTTP(w, r)
-}
-
-// LoginWithGoogle operation middleware
-func (siw *ServerInterfaceWrapper) LoginWithGoogle(w http.ResponseWriter, r *http.Request) {
-
-	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		siw.Handler.LoginWithGoogle(w, r)
-	}))
-
-	for _, middleware := range siw.HandlerMiddlewares {
-		handler = middleware(handler)
-	}
-
-	handler.ServeHTTP(w, r)
-}
 
 // Logout operation middleware
 func (siw *ServerInterfaceWrapper) Logout(w http.ResponseWriter, r *http.Request) {
@@ -223,6 +181,48 @@ func (siw *ServerInterfaceWrapper) Logout(w http.ResponseWriter, r *http.Request
 
 	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		siw.Handler.Logout(w, r, params)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// CallbackFromGoogle operation middleware
+func (siw *ServerInterfaceWrapper) CallbackFromGoogle(w http.ResponseWriter, r *http.Request) {
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.CallbackFromGoogle(w, r)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// LinkWithGoogle operation middleware
+func (siw *ServerInterfaceWrapper) LinkWithGoogle(w http.ResponseWriter, r *http.Request) {
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.LinkWithGoogle(w, r)
+	}))
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		handler = middleware(handler)
+	}
+
+	handler.ServeHTTP(w, r)
+}
+
+// LoginWithGoogle operation middleware
+func (siw *ServerInterfaceWrapper) LoginWithGoogle(w http.ResponseWriter, r *http.Request) {
+
+	handler := http.Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		siw.Handler.LoginWithGoogle(w, r)
 	}))
 
 	for _, middleware := range siw.HandlerMiddlewares {
@@ -404,19 +404,19 @@ func HandlerWithOptions(si ServerInterface, options ChiServerOptions) http.Handl
 	}
 
 	r.Group(func(r chi.Router) {
-		r.Get(options.BaseURL+"/google/callback", wrapper.CallbackFromGoogle)
+		r.Post(options.BaseURL+"/auth/logout", wrapper.Logout)
 	})
 	r.Group(func(r chi.Router) {
-		r.Post(options.BaseURL+"/google/link", wrapper.LinkWithGoogle)
+		r.Get(options.BaseURL+"/auth/oauth/google/callback", wrapper.CallbackFromGoogle)
 	})
 	r.Group(func(r chi.Router) {
-		r.Post(options.BaseURL+"/google/login", wrapper.LoginWithGoogle)
+		r.Post(options.BaseURL+"/auth/oauth/google/link", wrapper.LinkWithGoogle)
 	})
 	r.Group(func(r chi.Router) {
-		r.Post(options.BaseURL+"/logout", wrapper.Logout)
+		r.Post(options.BaseURL+"/auth/oauth/google/login", wrapper.LoginWithGoogle)
 	})
 	r.Group(func(r chi.Router) {
-		r.Post(options.BaseURL+"/refresh", wrapper.RefreshAccessToken)
+		r.Post(options.BaseURL+"/auth/refresh", wrapper.RefreshAccessToken)
 	})
 
 	return r

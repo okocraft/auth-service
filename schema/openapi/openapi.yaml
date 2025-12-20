@@ -4,65 +4,8 @@ info:
   version: v1.0
 tags:
   - name: AuthAPI
-  - name: GoogleAuthAPI
 paths:
-  /google/callback:
-    get:
-      operationId: callbackFromGoogle
-      description: Callback from Google
-      parameters: []
-      responses:
-        '307':
-          description: Redirection
-        '404':
-          description: The server cannot find the requested resource.
-      tags:
-        - GoogleAuthAPI
-  /google/link:
-    post:
-      operationId: linkWithGoogle
-      description: First login with Google Account
-      parameters: []
-      responses:
-        '200':
-          description: The request has succeeded.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GoogleLoginResponse'
-        '404':
-          description: The server cannot find the requested resource.
-      tags:
-        - GoogleAuthAPI
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/GoogleFirstLoginRequest'
-  /google/login:
-    post:
-      operationId: loginWithGoogle
-      description: Login with Google Account
-      parameters: []
-      responses:
-        '200':
-          description: The request has succeeded.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GoogleLoginResponse'
-        '404':
-          description: The server cannot find the requested resource.
-      tags:
-        - GoogleAuthAPI
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/GoogleLoginRequest'
-  /logout:
+  /auth/logout:
     post:
       operationId: logout
       description: Invalidate refresh_token and access_token
@@ -83,7 +26,63 @@ paths:
           description: 'There is no content to send for this request, but the headers may be useful. '
       tags:
         - AuthAPI
-  /refresh:
+  /auth/oauth/google/callback:
+    get:
+      operationId: callbackFromGoogle
+      description: Callback from Google
+      parameters: []
+      responses:
+        '307':
+          description: Redirection
+        '404':
+          description: The server cannot find the requested resource.
+      tags:
+        - AuthAPI
+  /auth/oauth/google/link:
+    post:
+      operationId: linkWithGoogle
+      description: Link account with Google Account
+      parameters: []
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleLoginResponse'
+        '404':
+          description: The server cannot find the requested resource.
+      tags:
+        - AuthAPI
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GoogleFirstLoginRequest'
+  /auth/oauth/google/login:
+    post:
+      operationId: loginWithGoogle
+      description: Login with Google Account
+      parameters: []
+      responses:
+        '200':
+          description: The request has succeeded.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GoogleLoginResponse'
+        '404':
+          description: The server cannot find the requested resource.
+      tags:
+        - AuthAPI
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GoogleLoginRequest'
+  /auth/refresh:
     post:
       operationId: refreshAccessToken
       description: Refresh access token
@@ -127,7 +126,6 @@ components:
       properties:
         login_key:
           type: string
-          format: url
           description: the login key
     GoogleLoginRequest:
       type: object

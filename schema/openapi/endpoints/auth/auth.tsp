@@ -1,4 +1,4 @@
-import "../models/auth.tsp";
+import "../../models/auth.tsp";
 import "@typespec/http";
 import "@typespec/openapi3";
 
@@ -7,7 +7,12 @@ using TypeSpec.OpenAPI;
 using AuthAPI.Models;
 
 @tag("AuthAPI")
-namespace AuthAPI.Endpoints {
+@route("/auth")
+namespace AuthAPI.Route {
+
+}
+
+namespace AuthAPI.Route.Endpoints {
   @route("/logout")
   @post
   @operationId("logout")

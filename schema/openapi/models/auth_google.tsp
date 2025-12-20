@@ -1,7 +1,6 @@
 namespace AuthAPI.Models.Google {
   @friendlyName("GoogleFirstLoginRequest")
   model GoogleFirstLoginRequest {
-    @format("url")
     @doc("the login key")
     login_key: string;
   }

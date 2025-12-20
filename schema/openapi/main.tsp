@@ -1,5 +1,6 @@
-import "./endpoints/auth.tsp";
-import "./endpoints/google/google.tsp";
+import "./endpoints/auth/auth.tsp";
+import "./endpoints/auth/oauth/oauth.tsp";
+import "./endpoints/auth/oauth/google/google.tsp";
 import "./models/auth.tsp";
 import "./models/auth_google.tsp";
 import "@typespec/openapi";

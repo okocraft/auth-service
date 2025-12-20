@@ -1,4 +1,5 @@
-import "../../models/auth_google.tsp";
+import "../../../../models/auth.tsp";
+import "../../../../models/auth_google.tsp";
 import "@typespec/http";
 import "@typespec/openapi3";
 
@@ -6,13 +7,12 @@ using TypeSpec.Http;
 using TypeSpec.OpenAPI;
 using AuthAPI.Models.Google;
 
-@tag("GoogleAuthAPI")
 @route("/google")
-namespace AuthAPI.Google.Endpoints {
+namespace AuthAPI.Route.OAuth.Google.Endpoints {
   @route("/link")
   @post
   @operationId("linkWithGoogle")
-  @doc("First login with Google Account")
+  @doc("Link account with Google Account")
   op linkWithGoogle(@body _: GoogleFirstLoginRequest): {
     @statusCode
     statusCode: 200;
