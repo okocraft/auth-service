@@ -4,7 +4,7 @@
   "private": true,
   "author": "Siroshun09",
   "license": "Apache-2.0",
-  "packageManager": "pnpm@10.26.1",
+  "packageManager": "pnpm@10.26.2",
   "scripts": {
     "gen": "pnpm run gen:format && pnpm run gen:schema && pnpm run gen:copy",
     "gen:format": "tsp format \"**/*.tsp\"",
