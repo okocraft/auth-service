@@ -7,7 +7,7 @@ require (
 	github.com/Siroshun09/logs v1.3.0
 	github.com/Siroshun09/serrors v1.4.1
 	github.com/Siroshun09/serrors/errorlogs v1.2.0
-	github.com/go-chi/chi/v5 v5.2.4
+	github.com/go-chi/chi/v5 v5.2.5
 	github.com/go-chi/cors v1.2.2
 	github.com/go-sql-driver/mysql v1.9.3
 	github.com/gofrs/uuid/v5 v5.4.0
