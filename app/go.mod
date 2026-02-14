@@ -1,6 +1,6 @@
 module github.com/okocraft/auth-service
 
-go 1.25
+go 1.26
 
 require (
 	github.com/Siroshun09/go-httplib v0.5.0
