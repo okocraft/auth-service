@@ -4,14 +4,14 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/Siroshun09/serrors"
+	"github.com/Siroshun09/serrors/v2"
 )
 
 // GetProjectRoot searches for the project root directory containing go.mod
 func GetProjectRoot() (string, error) {
 	dir, err := os.Getwd()
 	if err != nil {
-		return "", serrors.WithStackTrace(err)
+		return "", serrors.Wrap(err)
 	}
 
 	for {
@@ -25,5 +25,5 @@ func GetProjectRoot() (string, error) {
 		dir = parent
 	}
 
-	return "", serrors.WithStackTrace(os.ErrNotExist)
+	return "", serrors.Wrap(os.ErrNotExist)
 }

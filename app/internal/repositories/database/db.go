@@ -7,7 +7,7 @@ import (
 	"net"
 	"time"
 
-	"github.com/Siroshun09/serrors"
+	"github.com/Siroshun09/serrors/v2"
 	"github.com/go-sql-driver/mysql"
 	"github.com/okocraft/auth-service/internal/config"
 )
@@ -41,11 +41,11 @@ func GenerateConfig(c config.DBConfig) *mysql.Config {
 func New(c config.DBConfig, maxLifeTime time.Duration) (DB, error) {
 	conn, err := sql.Open("mysql", GenerateConfig(c).FormatDSN())
 	if err != nil {
-		return nil, serrors.WithStackTrace(err)
+		return nil, serrors.Wrap(err)
 	}
 	conn.SetConnMaxLifetime(maxLifeTime)
 	if err := conn.Ping(); err != nil {
-		return nil, serrors.WithStackTrace(err)
+		return nil, serrors.Wrap(err)
 	}
 	return db{base: conn}, nil
 }
@@ -66,7 +66,7 @@ func (db db) Conn() Connection {
 func (db db) WithTx(ctx context.Context, fn func(ctx context.Context, tx Connection) error) (returnErr error) {
 	tx, beginErr := db.base.BeginTx(ctx, db.txOpts)
 	if beginErr != nil {
-		return serrors.WithStackTrace(errors.Join(ErrFailedToBegin, beginErr))
+		return serrors.Wrap(errors.Join(ErrFailedToBegin, beginErr))
 	}
 
 	var fnErr error
@@ -74,18 +74,18 @@ func (db db) WithTx(ctx context.Context, fn func(ctx context.Context, tx Connect
 		if fnErr != nil {
 			rbErr := tx.Rollback()
 			if rbErr != nil {
-				returnErr = serrors.WithStackTrace(errors.Join(ErrFailedToRollback, fnErr, rbErr))
+				returnErr = serrors.Wrap(errors.Join(ErrFailedToRollback, fnErr, rbErr))
 				return
 			}
 		}
 	}()
 
 	if fnErr = fn(ctx, newConnection(tx)); fnErr != nil {
-		return serrors.WithStackTrace(errors.Join(ErrFunctionError, fnErr))
+		return serrors.Wrap(errors.Join(ErrFunctionError, fnErr))
 	}
 
 	if err := tx.Commit(); err != nil {
-		return serrors.WithStackTrace(errors.Join(ErrFailedToCommit, err))
+		return serrors.Wrap(errors.Join(ErrFailedToCommit, err))
 	}
 
 	return nil
@@ -94,7 +94,7 @@ func (db db) WithTx(ctx context.Context, fn func(ctx context.Context, tx Connect
 func (db db) Close() error {
 	err := db.base.Close()
 	if err != nil {
-		return serrors.WithStackTrace(err)
+		return serrors.Wrap(err)
 	}
 	return nil
 }

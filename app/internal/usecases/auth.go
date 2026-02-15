@@ -17,7 +17,7 @@ import (
 	"github.com/okocraft/authlib/jwtclaims"
 	"github.com/okocraft/authlib/user"
 
-	"github.com/Siroshun09/serrors"
+	"github.com/Siroshun09/serrors/v2"
 	"github.com/golang-jwt/jwt/v5"
 )
 
@@ -53,12 +53,12 @@ type authUsecase struct {
 func (u authUsecase) CreateStateJWT(_ context.Context, currentPageURL string, codeVerifier string) (string, error) {
 	id, err := uuid.NewV7()
 	if err != nil {
-		return "", serrors.WithStackTrace(err)
+		return "", serrors.Wrap(err)
 	}
 
 	encryptedCodeVerifier, err := u.conf.Encrypter.Encrypt([]byte(codeVerifier))
 	if err != nil {
-		return "", serrors.WithStackTrace(err)
+		return "", serrors.Wrap(err)
 	}
 
 	createdAt := time.Now()
@@ -76,7 +76,7 @@ func (u authUsecase) CreateStateJWT(_ context.Context, currentPageURL string, co
 
 	tokenString, err := u.conf.JWTSigner.Sign(state.CreateJWTClaims())
 	if err != nil {
-		return "", serrors.WithStackTrace(err)
+		return "", serrors.Wrap(err)
 	}
 
 	return tokenString, nil
@@ -85,12 +85,12 @@ func (u authUsecase) CreateStateJWT(_ context.Context, currentPageURL string, co
 func (u authUsecase) CreateStateJWTWithLoginKey(_ context.Context, loginKey domain.LoginKey, codeVerifier string) (string, error) {
 	id, err := uuid.NewV7()
 	if err != nil {
-		return "", serrors.WithStackTrace(err)
+		return "", serrors.Wrap(err)
 	}
 
 	encryptedCodeVerifier, err := u.conf.Encrypter.Encrypt([]byte(codeVerifier))
 	if err != nil {
-		return "", serrors.WithStackTrace(err)
+		return "", serrors.Wrap(err)
 	}
 
 	createdAt := time.Now()
@@ -108,7 +108,7 @@ func (u authUsecase) CreateStateJWTWithLoginKey(_ context.Context, loginKey doma
 
 	tokenString, err := u.conf.JWTSigner.Sign(state.CreateJWTClaims())
 	if err != nil {
-		return "", serrors.WithStackTrace(err)
+		return "", serrors.Wrap(err)
 	}
 
 	return tokenString, nil
@@ -117,7 +117,7 @@ func (u authUsecase) CreateStateJWTWithLoginKey(_ context.Context, loginKey doma
 func (u authUsecase) VerifyStateJWT(_ context.Context, tokenString string) (jwtclaims.LoginStateClaimType, jwt.MapClaims, error) {
 	claims, err := u.conf.JWTSigner.VerifyAndParse(tokenString)
 	if err != nil {
-		return jwtclaims.LoginStateClaimTypeUnknown, nil, serrors.WithStackTrace(err)
+		return jwtclaims.LoginStateClaimTypeUnknown, nil, serrors.Wrap(err)
 	}
 
 	claimType := jwtclaims.GetLoginStateClaimType(claims)
@@ -127,9 +127,9 @@ func (u authUsecase) VerifyStateJWT(_ context.Context, tokenString string) (jwtc
 func (u authUsecase) GetUserIDAndRefreshTokenIDFromJTI(ctx context.Context, jti uuid.UUID) (user.ID, int64, error) {
 	userID, refreshTokenID, err := u.repo.GetUserIDAndRefreshTokenIDFromJTI(ctx, u.db.Conn(), jti)
 	if errors.Is(err, domain.RefreshTokenIDByJTINotFoundError) {
-		return 0, 0, serrors.WithStackTrace(domain.NewUnauthorizedError(err))
+		return 0, 0, serrors.Wrap(domain.NewUnauthorizedError(err))
 	} else if err != nil {
-		return 0, 0, serrors.WithStackTrace(err)
+		return 0, 0, serrors.Wrap(err)
 	}
 	return userID, refreshTokenID, nil
 }
@@ -137,12 +137,12 @@ func (u authUsecase) GetUserIDAndRefreshTokenIDFromJTI(ctx context.Context, jti 
 func (u authUsecase) DecryptCodeVerifier(_ context.Context, encryptedCodeVerifier string) (string, error) {
 	data, err := hex.DecodeString(encryptedCodeVerifier)
 	if err != nil {
-		return "", serrors.WithStackTrace(err)
+		return "", serrors.Wrap(err)
 	}
 
 	decrypted, err := u.conf.Encrypter.Decrypt(data)
 	if err != nil {
-		return "", serrors.WithStackTrace(err)
+		return "", serrors.Wrap(err)
 	}
 
 	return string(decrypted), nil
@@ -151,12 +151,12 @@ func (u authUsecase) DecryptCodeVerifier(_ context.Context, encryptedCodeVerifie
 func (u authUsecase) CreateRefreshToken(ctx context.Context, userID user.ID) (uuid.UUID, string, time.Time, error) {
 	refreshTokenJTI, err := uuid.NewV7()
 	if err != nil {
-		return uuid.Nil, "", time.Time{}, serrors.WithStackTrace(err)
+		return uuid.Nil, "", time.Time{}, serrors.Wrap(err)
 	}
 
 	loginID, err := uuid.NewV4()
 	if err != nil {
-		return uuid.Nil, "", time.Time{}, serrors.WithStackTrace(err)
+		return uuid.Nil, "", time.Time{}, serrors.Wrap(err)
 	}
 
 	createdAt := time.Now()
@@ -164,7 +164,7 @@ func (u authUsecase) CreateRefreshToken(ctx context.Context, userID user.ID) (uu
 
 	err = u.repo.SaveRefreshToken(ctx, u.db.Conn(), userID, refreshTokenJTI, loginID, expiresAt)
 	if err != nil {
-		return uuid.Nil, "", time.Time{}, serrors.WithStackTrace(err)
+		return uuid.Nil, "", time.Time{}, serrors.Wrap(err)
 	}
 
 	refreshToken := jwtclaims.RefreshTokenClaims{
@@ -178,7 +178,7 @@ func (u authUsecase) CreateRefreshToken(ctx context.Context, userID user.ID) (uu
 
 	refreshTokenString, err := u.conf.JWTSigner.Sign(refreshToken.CreateJWTClaims())
 	if err != nil {
-		return uuid.Nil, "", time.Time{}, serrors.WithStackTrace(err)
+		return uuid.Nil, "", time.Time{}, serrors.Wrap(err)
 	}
 
 	return loginID, refreshTokenString, createdAt, nil
@@ -187,16 +187,16 @@ func (u authUsecase) CreateRefreshToken(ctx context.Context, userID user.ID) (uu
 func (u authUsecase) VerifyRefreshToken(_ context.Context, tokenString string) (jwtclaims.RefreshTokenClaims, error) {
 	claims, err := u.conf.JWTSigner.VerifyAndParse(tokenString)
 	if err != nil {
-		return jwtclaims.RefreshTokenClaims{}, serrors.WithStackTrace(err)
+		return jwtclaims.RefreshTokenClaims{}, serrors.Wrap(err)
 	}
 
 	refreshTokenClaims, err := jwtclaims.ReadRefreshTokenClaimsFrom(claims)
 	if err != nil {
-		return jwtclaims.RefreshTokenClaims{}, serrors.WithStackTrace(err)
+		return jwtclaims.RefreshTokenClaims{}, serrors.Wrap(err)
 	}
 
 	if err := refreshTokenClaims.Validate(time.Now()); err != nil {
-		return jwtclaims.RefreshTokenClaims{}, serrors.WithStackTrace(err)
+		return jwtclaims.RefreshTokenClaims{}, serrors.Wrap(err)
 	}
 
 	return refreshTokenClaims, nil
@@ -205,12 +205,12 @@ func (u authUsecase) VerifyRefreshToken(_ context.Context, tokenString string) (
 func (u authUsecase) RefreshToken(ctx context.Context, params domain.RefreshTokenParams) (domain.RefreshedToken, error) {
 	refreshTokenJTI, err := uuid.NewV7()
 	if err != nil {
-		return domain.RefreshedToken{}, serrors.WithStackTrace(err)
+		return domain.RefreshedToken{}, serrors.Wrap(err)
 	}
 
 	accessTokenJTI, err := uuid.NewV7()
 	if err != nil {
-		return domain.RefreshedToken{}, serrors.WithStackTrace(err)
+		return domain.RefreshedToken{}, serrors.Wrap(err)
 	}
 
 	createdAt := time.Now()
@@ -223,18 +223,18 @@ func (u authUsecase) RefreshToken(ctx context.Context, params domain.RefreshToke
 	err = u.db.WithTx(ctx, func(ctx context.Context, tx database.Connection) error {
 		err = u.repo.SaveAccessToken(ctx, tx, params.RefreshTokenID, accessTokenJTI, createdAt)
 		if err != nil {
-			return serrors.WithStackTrace(err)
+			return serrors.Wrap(err)
 		}
 
 		err = u.repo.SaveRefreshToken(ctx, tx, params.UserID, refreshTokenJTI, params.LoginID, createdAt)
 		if err != nil {
-			return serrors.WithStackTrace(err)
+			return serrors.Wrap(err)
 		}
 
 		return nil
 	})
 	if err != nil {
-		return domain.RefreshedToken{}, serrors.WithStackTrace(err)
+		return domain.RefreshedToken{}, serrors.Wrap(err)
 	}
 
 	refreshToken := jwtclaims.RefreshTokenClaims{
@@ -256,12 +256,12 @@ func (u authUsecase) RefreshToken(ctx context.Context, params domain.RefreshToke
 
 	refreshTokenString, err := u.conf.JWTSigner.Sign(refreshToken.CreateJWTClaims())
 	if err != nil {
-		return domain.RefreshedToken{}, serrors.WithStackTrace(err)
+		return domain.RefreshedToken{}, serrors.Wrap(err)
 	}
 
 	accessTokenString, err := u.conf.JWTSigner.Sign(accessToken.CreateJWTClaims())
 	if err != nil {
-		return domain.RefreshedToken{}, serrors.WithStackTrace(err)
+		return domain.RefreshedToken{}, serrors.Wrap(err)
 	}
 
 	return domain.RefreshedToken{
@@ -275,18 +275,18 @@ func (u authUsecase) InvalidateTokens(ctx context.Context, refreshTokenClaims jw
 	err := u.db.WithTx(ctx, func(ctx context.Context, tx database.Connection) error {
 		err := u.repo.DeleteAccessTokensByLoginID(ctx, tx, refreshTokenClaims.LoginID)
 		if err != nil {
-			return serrors.WithStackTrace(err)
+			return serrors.Wrap(err)
 		}
 
 		err = u.repo.DeleteRefreshTokensByLoginID(ctx, tx, refreshTokenClaims.LoginID)
 		if err != nil {
-			return serrors.WithStackTrace(err)
+			return serrors.Wrap(err)
 		}
 
 		return nil
 	})
 	if err != nil {
-		return serrors.WithStackTrace(err)
+		return serrors.Wrap(err)
 	}
 
 	return nil
@@ -295,14 +295,14 @@ func (u authUsecase) InvalidateTokens(ctx context.Context, refreshTokenClaims jw
 func (u authUsecase) CreateLoginKey(ctx context.Context, userID user.ID) (domain.LoginKey, error) {
 	key, err := rand.Int(rand.Reader, big.NewInt(math.MaxInt64))
 	if err != nil {
-		return 0, serrors.WithStackTrace(err)
+		return 0, serrors.Wrap(err)
 	}
 
 	loginKey := domain.LoginKey(key.Int64())
 
 	err = u.userRepo.SaveLoginKeyForUserID(ctx, u.db.Conn(), userID, loginKey, time.Now())
 	if err != nil {
-		return 0, serrors.WithStackTrace(err)
+		return 0, serrors.Wrap(err)
 	}
 
 	return loginKey, nil

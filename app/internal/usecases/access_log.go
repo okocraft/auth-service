@@ -3,7 +3,7 @@ package usecases
 import (
 	"context"
 
-	"github.com/Siroshun09/serrors"
+	"github.com/Siroshun09/serrors/v2"
 	"github.com/okocraft/auth-service/internal/domain"
 	"github.com/okocraft/auth-service/internal/repositories"
 	"github.com/okocraft/auth-service/internal/repositories/database"
@@ -31,7 +31,7 @@ type accessLogUsecase struct {
 func (u accessLogUsecase) SaveAccessLogByUserID(ctx context.Context, userID user.ID, accessLog domain.AccessLogParams) error {
 	err := u.repo.SaveAccessLog(ctx, u.db.Conn(), userID, accessLog)
 	if err != nil {
-		return serrors.WithStackTrace(err)
+		return serrors.Wrap(err)
 	}
 	return nil
 }

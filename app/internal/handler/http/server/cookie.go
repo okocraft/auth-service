@@ -6,14 +6,14 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/Siroshun09/serrors"
+	"github.com/Siroshun09/serrors/v2"
 	"github.com/okocraft/auth-service/internal/domain"
 )
 
 func generateCSRFToken() (string, error) {
 	b := make([]byte, 32)
 	if _, err := rand.Read(b); err != nil {
-		return "", serrors.WithStackTrace(err)
+		return "", serrors.Wrap(err)
 	}
 	return base64.URLEncoding.EncodeToString(b), nil
 }

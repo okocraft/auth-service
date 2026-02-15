@@ -29,7 +29,7 @@ func (r accessLogRepository) SaveAccessLog(ctx context.Context, conn database.Co
 		CreatedAt:  accessLog.CreatedAt,
 	})
 	if err != nil {
-		return database.NewDBErrorWithStackTrace(err)
+		return database.NewDBErrorWrap(err)
 	}
 	return nil
 }

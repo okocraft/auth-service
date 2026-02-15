@@ -6,15 +6,14 @@ import (
 	"os"
 	"time"
 
-	"github.com/Siroshun09/logs"
+	"github.com/Siroshun09/logs/v2"
 	"github.com/okocraft/auth-service/internal/config"
 	"github.com/okocraft/auth-service/internal/handler/http/server"
 	"github.com/okocraft/auth-service/internal/repositories/database"
 )
 
 func main() {
-	slogLogger := slog.New(slog.NewJSONHandler(os.Stdout, nil))
-	logger := logs.NewLoggerWithSlog(slogLogger)
+	logger := logs.NewLoggerWithSlog(slog.New(slog.NewJSONHandler(os.Stdout, nil)))
 
 	ctx := context.Background()
 	ctx = logs.WithContext(ctx, logger)
@@ -37,7 +36,7 @@ func main() {
 		}
 	}()
 
-	httpServer := server.NewHTTPServerFactory(cfg, slogLogger, db).NewHTTPServer()
+	httpServer := server.NewHTTPServerFactory(cfg, logger, db).NewHTTPServer()
 
 	srvCtx, stop := httpServer.Run(ctx)
 	logger.Info(ctx, "http server started")

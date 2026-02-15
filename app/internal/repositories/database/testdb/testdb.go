@@ -10,7 +10,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Siroshun09/serrors"
+	"github.com/Siroshun09/serrors/v2"
 	"github.com/gofrs/uuid/v5"
 	"github.com/okocraft/auth-service/internal/config"
 	"github.com/okocraft/auth-service/internal/repositories/database"
@@ -26,7 +26,7 @@ type TestDB interface {
 func NewTestDB(useTx bool) (TestDB, error) {
 	id, err := uuid.NewV7()
 	if err != nil {
-		return nil, serrors.WithStackTrace(err)
+		return nil, serrors.Wrap(err)
 	}
 
 	dbConfig, err := config.NewDBConfigFromEnv()
@@ -41,24 +41,24 @@ func NewTestDB(useTx bool) (TestDB, error) {
 
 	db, err := database.New(dbConfig, 15*time.Minute)
 	if err != nil {
-		return nil, serrors.WithStackTrace(err)
+		return nil, serrors.Wrap(err)
 	}
 
 	dbConfig.DBName = "testdb_" + strings.ReplaceAll(id.String(), "-", "")
 	createDB := "CREATE " + "DATABASE " + dbConfig.DBName
 	_, err = db.Base().Exec(createDB)
 	if err != nil {
-		return nil, serrors.WithStackTrace(err)
+		return nil, serrors.Wrap(err)
 	}
 
 	_, err = db.Base().Exec("USE " + dbConfig.DBName)
 	if err != nil {
-		return nil, serrors.WithStackTrace(err)
+		return nil, serrors.Wrap(err)
 	}
 
 	err = createTables(db.Base())
 	if err != nil {
-		return nil, serrors.WithStackTrace(err)
+		return nil, serrors.Wrap(err)
 	}
 
 	return &testDB{
@@ -71,17 +71,17 @@ func NewTestDB(useTx bool) (TestDB, error) {
 func createTables(db *sql.DB) error {
 	rootDir, err := GetProjectRoot()
 	if err != nil {
-		return serrors.WithStackTrace(err)
+		return serrors.Wrap(err)
 	}
 
 	schema, err := os.ReadFile(filepath.Join(rootDir, "../schema/database/schema.sql"))
 	if err != nil {
-		return serrors.WithStackTrace(err)
+		return serrors.Wrap(err)
 	}
 
 	_, err = db.Exec(string(schema))
 	if err != nil {
-		return serrors.WithStackTrace(err)
+		return serrors.Wrap(err)
 	}
 
 	return nil
@@ -115,14 +115,14 @@ func (db *testDB) Run(t *testing.T, f func(ctx context.Context, conn database.Co
 func (db *testDB) Cleanup() (err error) {
 	err = db.db.Close()
 	if err != nil {
-		return serrors.WithStackTrace(err)
+		return serrors.Wrap(err)
 	}
 
 	cfg := db.dbCfg
 	cfg.DBName = ""
 	dbForDrop, err := database.New(cfg, 15*time.Minute)
 	if err != nil {
-		return serrors.WithStackTrace(err)
+		return serrors.Wrap(err)
 	}
 	defer func() {
 		closeErr := dbForDrop.Close()
@@ -133,7 +133,7 @@ func (db *testDB) Cleanup() (err error) {
 
 	_, err = dbForDrop.Base().Exec("DROP " + "DATABASE " + db.dbCfg.DBName)
 	if err != nil {
-		return serrors.WithStackTrace(err)
+		return serrors.Wrap(err)
 	}
 
 	return nil

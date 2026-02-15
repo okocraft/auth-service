@@ -38,7 +38,7 @@ func (r authRepository) SaveRefreshToken(ctx context.Context, conn database.Conn
 		CreatedAt: createdAt,
 	})
 	if err != nil {
-		return database.NewDBErrorWithStackTrace(err)
+		return database.NewDBErrorWrap(err)
 	}
 	return nil
 }
@@ -47,7 +47,7 @@ func (r authRepository) SaveAccessToken(ctx context.Context, conn database.Conne
 	q := conn.Queries()
 	err := q.InsertAccessToken(ctx, queries.InsertAccessTokenParams{RefreshTokenID: refreshTokenID, Jti: jti.Bytes(), CreatedAt: createdAt})
 	if err != nil {
-		return database.NewDBErrorWithStackTrace(err)
+		return database.NewDBErrorWrap(err)
 	}
 	return nil
 }
@@ -58,7 +58,7 @@ func (r authRepository) GetUserIDAndRefreshTokenIDFromJTI(ctx context.Context, c
 	if errors.Is(err, sql.ErrNoRows) {
 		return 0, 0, domain.RefreshTokenIDByJTINotFoundError
 	} else if err != nil {
-		return 0, 0, database.NewDBErrorWithStackTrace(err)
+		return 0, 0, database.NewDBErrorWrap(err)
 	}
 
 	return user.ID(row.UserID), row.ID, nil
@@ -68,7 +68,7 @@ func (r authRepository) DeleteAccessTokensByLoginID(ctx context.Context, conn da
 	q := conn.Queries()
 	err := q.DeleteAccessTokensByLoginID(ctx, loginID.Bytes())
 	if err != nil {
-		return database.NewDBErrorWithStackTrace(err)
+		return database.NewDBErrorWrap(err)
 	}
 	return nil
 }
@@ -77,7 +77,7 @@ func (r authRepository) DeleteRefreshTokensByLoginID(ctx context.Context, conn d
 	q := conn.Queries()
 	err := q.DeleteRefreshTokensByLoginID(ctx, loginID.Bytes())
 	if err != nil {
-		return database.NewDBErrorWithStackTrace(err)
+		return database.NewDBErrorWrap(err)
 	}
 	return nil
 }
@@ -86,7 +86,7 @@ func (r authRepository) DeleteExpiredAccessTokens(ctx context.Context, conn data
 	q := conn.Queries()
 	rows, err := q.DeleteExpiredAccessTokens(ctx, expiredAt)
 	if err != nil {
-		return 0, database.NewDBErrorWithStackTrace(err)
+		return 0, database.NewDBErrorWrap(err)
 	}
 	return rows, nil
 }
@@ -95,7 +95,7 @@ func (r authRepository) DeleteExpiredRefreshTokens(ctx context.Context, conn dat
 	q := conn.Queries()
 	rows, err := q.DeleteExpiredRefreshTokens(ctx, expiredAt)
 	if err != nil {
-		return 0, database.NewDBErrorWithStackTrace(err)
+		return 0, database.NewDBErrorWrap(err)
 	}
 	return rows, nil
 }

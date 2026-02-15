@@ -5,13 +5,15 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"errors"
+	"log/slog"
 	"net/http"
 	"net/url"
 	"strings"
 	"time"
 
 	"github.com/Siroshun09/go-httplib"
-	"github.com/Siroshun09/logs"
+	"github.com/Siroshun09/logs/v2"
+	"github.com/Siroshun09/serrors/v2"
 	"github.com/okocraft/auth-service/internal/config"
 	"github.com/okocraft/auth-service/internal/domain"
 	"github.com/okocraft/auth-service/internal/handler/http/oapi"
@@ -162,7 +164,7 @@ func (h googleAuthHandler) CallbackFromGoogle(w http.ResponseWriter, r *http.Req
 			h.handleFirstLoginCallback(ctx, w, r, openID, domain.LoginKey(firstLoginStateClaims.LoginKey))
 		}
 	default:
-		logs.Errorf(ctx, "unknown claim type: %v", claimType)
+		logs.Error(ctx, serrors.New("unknown claim type", slog.Int("type", int(claimType))))
 		h.redirectToResultPage(ctx, w, r, oapi.GoogleLoginResultInternalError)
 		return
 	}

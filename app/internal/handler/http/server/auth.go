@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/Siroshun09/go-httplib"
-	"github.com/Siroshun09/logs"
+	"github.com/Siroshun09/logs/v2"
 	"github.com/okocraft/auth-service/internal/domain"
 	"github.com/okocraft/auth-service/internal/handler/http/oapi"
 	"github.com/okocraft/auth-service/internal/usecases"

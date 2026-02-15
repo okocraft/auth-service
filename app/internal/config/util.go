@@ -5,7 +5,7 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/Siroshun09/serrors"
+	"github.com/Siroshun09/serrors/v2"
 )
 
 func getRequiredString(key string) (string, error) {
@@ -24,7 +24,7 @@ func getBoolFromEnv(key string, defaultValue bool) (bool, error) {
 
 	b, err := strconv.ParseBool(value)
 	if err != nil {
-		return false, serrors.WithStackTrace(err)
+		return false, serrors.Wrap(err)
 	}
 
 	return b, nil

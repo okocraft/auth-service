@@ -11,9 +11,9 @@ import (
 	"github.com/Siroshun09/go-httplib"
 	"github.com/Siroshun09/go-httplib/httplog"
 	"github.com/Siroshun09/go-httplib/runner"
-	"github.com/Siroshun09/logs"
-	"github.com/Siroshun09/serrors"
-	"github.com/Siroshun09/serrors/errorlogs"
+	"github.com/Siroshun09/logs/errorlogs/v2"
+	"github.com/Siroshun09/logs/v2"
+	"github.com/Siroshun09/serrors/v2"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/cors"
 	"github.com/okocraft/auth-service/internal/config"
@@ -28,15 +28,15 @@ type HTTPServerFactory struct {
 	database database.DB
 }
 
-func NewHTTPServerFactory(cfg config.HTTPServerConfig, logger *slog.Logger, database database.DB) HTTPServerFactory {
+func NewHTTPServerFactory(cfg config.HTTPServerConfig, logger logs.Logger, database database.DB) HTTPServerFactory {
 	return HTTPServerFactory{
 		cfg: cfg,
-		logger: errorlogs.NewLoggerWithOption(
-			logs.NewLoggerWithSlog(slog.New(httplog.NewHTTPAttrHandler(logger.Handler()))),
-			errorlogs.LoggerOption{
-				StackTraceLogLevel:                  errorlogs.StackTraceLogLevelWarn,
+		logger: errorlogs.NewLogger(
+			httplog.NewHTTPAttrLogger(logger),
+			&errorlogs.Option{
 				PrintStackTraceOnWarn:               cfg.Debug,
 				PrintCurrentStackTraceIfNotAttached: true,
+				IncludeErrorAttrs:                   true,
 			},
 		),
 		database: database,
@@ -56,7 +56,7 @@ func (f HTTPServerFactory) NewHTTPServer() runner.HTTPServerRunner {
 			}
 
 			if f.cfg.Debug {
-				logs.Warnf(r.Context(), "Unknown origin: "+origin)
+				logs.Warn(r.Context(), serrors.New("unknown origin", slog.String("origin", origin)))
 			}
 			return false
 		},
@@ -76,7 +76,7 @@ func (f HTTPServerFactory) NewHTTPServer() runner.HTTPServerRunner {
 			logs.Error(ctx, err)
 		},
 		func(ctx context.Context, rvr any) {
-			logs.Error(ctx, serrors.Errorf("%v", rvr))
+			logs.Error(ctx, serrors.New("panic occurred", slog.Any("panic", rvr)))
 		},
 	)
 }
@@ -85,7 +85,7 @@ func (f HTTPServerFactory) newRecoverer(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		defer func() {
 			if rvr := recover(); rvr != nil {
-				logs.Error(r.Context(), serrors.Errorf("%v", rvr))
+				logs.Error(r.Context(), serrors.New("panic occurred", slog.Any("panic", rvr)))
 			}
 		}()
 
@@ -97,7 +97,7 @@ func (f HTTPServerFactory) newRecovererForAPIHandler(next http.Handler) http.Han
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		defer func() {
 			if rvr := recover(); rvr != nil {
-				httplib.RenderInternalServerError(r.Context(), w, serrors.Errorf("%v", rvr))
+				httplib.RenderInternalServerError(r.Context(), w, serrors.New("panic occurred", slog.Any("panic", rvr)))
 			}
 		}()
 

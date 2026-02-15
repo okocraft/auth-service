@@ -31,7 +31,7 @@ func (r userRepository) GetUserIDBySub(ctx context.Context, conn database.Connec
 	if errors.Is(err, sql.ErrNoRows) {
 		return 0, domain.UserNotFoundBySubError
 	} else if err != nil {
-		return 0, database.NewDBErrorWithStackTrace(err)
+		return 0, database.NewDBErrorWrap(err)
 	}
 
 	return user.ID(id), nil
@@ -42,7 +42,7 @@ func (r userRepository) GetUserIDByLoginKey(ctx context.Context, conn database.C
 	if errors.Is(err, sql.ErrNoRows) {
 		return 0, domain.UserNotFoundByLoginKeyError
 	} else if err != nil {
-		return 0, database.NewDBErrorWithStackTrace(err)
+		return 0, database.NewDBErrorWrap(err)
 	}
 
 	return user.ID(id), nil
@@ -55,7 +55,7 @@ func (r userRepository) SaveLoginKeyForUserID(ctx context.Context, conn database
 		CreatedAt: now,
 	})
 	if err != nil {
-		return database.NewDBErrorWithStackTrace(err)
+		return database.NewDBErrorWrap(err)
 	}
 	return nil
 }
@@ -63,7 +63,7 @@ func (r userRepository) SaveLoginKeyForUserID(ctx context.Context, conn database
 func (r userRepository) DeleteLoginKeyByUserID(ctx context.Context, conn database.Connection, id user.ID) error {
 	err := conn.Queries().DeleteLoginKey(ctx, int32(id))
 	if err != nil {
-		return database.NewDBErrorWithStackTrace(err)
+		return database.NewDBErrorWrap(err)
 	}
 	return nil
 }
@@ -75,7 +75,7 @@ func (r userRepository) SaveUserSub(ctx context.Context, conn database.Connectio
 		CreatedAt: now,
 	})
 	if err != nil {
-		return database.NewDBErrorWithStackTrace(err)
+		return database.NewDBErrorWrap(err)
 	} else if row == 0 {
 		return domain.SubAlreadyLinkedError
 	}
