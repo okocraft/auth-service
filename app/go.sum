@@ -11,8 +11,7 @@ github.com/Siroshun09/logs/logmock/v2 v2.0.0-rc.1 h1:W/CAunkcK0zJTEy7CLw+HFGDZjs
 github.com/Siroshun09/logs/logmock/v2 v2.0.0-rc.1/go.mod h1:QjkV9KTpvaNqfQkuiUbwgN1CdPHLhaVrwVOePI1QerM=
 github.com/Siroshun09/logs/v2 v2.0.0-rc.1 h1:Z7j9hup3q6mErDopp2LiY1+9VDjVk+ZjokwuUHg/Zkw=
 github.com/Siroshun09/logs/v2 v2.0.0-rc.1/go.mod h1:h7e6KzxJ9+FJRe3vVkavd9+yCyJ5iRaqBc+6wYYAVWM=
-github.com/Siroshun09/serrors/v2 v2.0.0-rc.1 h1:f7TTo1Ot5ALVoLbnNglpkqhhLRmDvIKIv89PiLv+rUo=
-github.com/Siroshun09/serrors/v2 v2.0.0-rc.1/go.mod h1:/8Qoqw56Z38BqM2fsAa1muyTNg6uatq3NnN4aACLCxw=
+github.com/Siroshun09/serrors/v2 v2.0.0-rc.2 h1:vGL04rpLcv89aA+3TdoZhybV51Y6lj4VSYZ6DJPIAFA=
 github.com/Siroshun09/serrors/v2 v2.0.0-rc.2/go.mod h1:/8Qoqw56Z38BqM2fsAa1muyTNg6uatq3NnN4aACLCxw=
 github.com/apapsch/go-jsonmerge/v2 v2.0.0 h1:axGnT1gRIfimI7gJifB699GoE/oq+F2MU7Dml6nw9rQ=
 github.com/apapsch/go-jsonmerge/v2 v2.0.0/go.mod h1:lvDnEdqiQrp0O42VQGgmlKpxL1AP2+08jFMw88y4klk=
