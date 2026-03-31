@@ -20,7 +20,7 @@ import (
 type TestDB interface {
 	GetDB() database.DB
 	Run(t *testing.T, f func(ctx context.Context, conn database.Connection))
-	Cleanup() error
+	Close() error
 }
 
 func NewTestDB(useTx bool) (TestDB, error) {
@@ -112,7 +112,7 @@ func (db *testDB) Run(t *testing.T, f func(ctx context.Context, conn database.Co
 	require.NoError(t, err)
 }
 
-func (db *testDB) Cleanup() (err error) {
+func (db *testDB) Close() (err error) {
 	err = db.db.Close()
 	if err != nil {
 		return serrors.Wrap(err)

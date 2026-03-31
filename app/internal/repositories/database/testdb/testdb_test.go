@@ -33,7 +33,7 @@ func TestNewTestDB(t *testing.T) {
 			require.NotNil(t, db)
 
 			t.Cleanup(func() {
-				require.NoError(t, db.Cleanup())
+				require.NoError(t, db.Close())
 				assert.Error(t, db.GetDB().Base().PingContext(ctx), "connection is still alive")
 			})
 
