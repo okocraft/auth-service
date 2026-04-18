@@ -19,7 +19,7 @@ services:
       timeout: 5s
       retries: 3
   auth_service_db_migration:
-    image: arigaio/atlas:1.1.6-community-alpine@sha256:b7477e7e81344f29e731bb38ffe1b4f28e4dd53463b6eceb5e51b62719b28ca9
+    image: arigaio/atlas:1.2.0-community-alpine@sha256:424b2f7ccd42f3b4addb30f6e37a188a4325d4829fc8961951d02d342c9c6abb
     command: >
       schema apply
       --auto-approve
