@@ -2,6 +2,7 @@ package config
 
 import (
 	"encoding/hex"
+	"fmt"
 	"time"
 
 	"github.com/Siroshun09/serrors/v2"
@@ -26,14 +27,14 @@ func NewAuthConfigFromEnv() (AuthConfig, error) {
 
 	privateKey, err := hex.DecodeString(privateKeyHex)
 	if err != nil {
-		return AuthConfig{}, serrors.WithMsg(err, "failed to decode AUTH_SERVICE_PRIVATE_KEY")
+		return AuthConfig{}, serrors.Wrap(fmt.Errorf("failed to decode AUTH_SERVICE_PRIVATE_KEY: %w", err))
 	} else if len(privateKey) != 32 {
 		return AuthConfig{}, serrors.New("AUTH_SERVICE_PRIVATE_KEY must be hex value of 32 bytes long")
 	}
 
 	encrypter, err := encrypt.NewAESEncrypter(privateKey)
 	if err != nil {
-		return AuthConfig{}, serrors.WithMsg(err, "failed to create encrypter")
+		return AuthConfig{}, serrors.Wrap(fmt.Errorf("failed to create encrypter: %w", err))
 	}
 
 	jwtSigner := jwtclaims.NewJWTSigner(jwt.SigningMethodHS512, privateKey)
