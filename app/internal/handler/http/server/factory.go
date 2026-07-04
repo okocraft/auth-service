@@ -36,7 +36,6 @@ func NewHTTPServerFactory(cfg config.HTTPServerConfig, logger logs.Logger, datab
 			&errorlogs.Option{
 				PrintStackTraceOnWarn:               cfg.Debug,
 				PrintCurrentStackTraceIfNotAttached: true,
-				IncludeErrorAttrs:                   true,
 			},
 		),
 		database: database,

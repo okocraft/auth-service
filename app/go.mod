@@ -4,8 +4,8 @@ go 1.26
 
 require (
 	github.com/Siroshun09/go-httplib v0.6.0
-	github.com/Siroshun09/logs/errorlogs/v2 v2.0.0-rc.1
-	github.com/Siroshun09/logs/v2 v2.0.0-rc.1
+	github.com/Siroshun09/logs/errorlogs/v2 v2.0.0
+	github.com/Siroshun09/logs/v2 v2.0.0
 	github.com/Siroshun09/serrors/v2 v2.0.0
 	github.com/go-chi/chi/v5 v5.3.0
 	github.com/go-chi/cors v1.2.2
