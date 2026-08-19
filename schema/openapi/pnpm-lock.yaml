@@ -9,20 +9,20 @@ importers:
   .:
     devDependencies:
       '@typespec/compiler':
-        specifier: 1.14.0
-        version: 1.14.0
+        specifier: 1.15.0
+        version: 1.15.0
       '@typespec/http':
-        specifier: 1.14.0
-        version: 1.14.0(@typespec/compiler@1.14.0)
+        specifier: 1.15.0
+        version: 1.15.0(@typespec/compiler@1.15.0)
       '@typespec/openapi':
-        specifier: 1.14.0
-        version: 1.14.0(@typespec/compiler@1.14.0)(@typespec/http@1.14.0(@typespec/compiler@1.14.0))
+        specifier: 1.15.0
+        version: 1.15.0(@typespec/compiler@1.15.0)(@typespec/http@1.15.0(@typespec/compiler@1.15.0))
       '@typespec/openapi3':
-        specifier: 1.14.0
-        version: 1.14.0(@typespec/compiler@1.14.0)(@typespec/http@1.14.0(@typespec/compiler@1.14.0))(@typespec/openapi@1.14.0(@typespec/compiler@1.14.0)(@typespec/http@1.14.0(@typespec/compiler@1.14.0)))(@typespec/versioning@0.84.0(@typespec/compiler@1.14.0))
+        specifier: 1.15.0
+        version: 1.15.0(@typespec/compiler@1.15.0)(@typespec/http@1.15.0(@typespec/compiler@1.15.0))(@typespec/openapi@1.15.0(@typespec/compiler@1.15.0)(@typespec/http@1.15.0(@typespec/compiler@1.15.0)))(@typespec/versioning@0.85.0(@typespec/compiler@1.15.0))
       '@typespec/versioning':
-        specifier: 0.84.0
-        version: 0.84.0(@typespec/compiler@1.14.0)
+        specifier: 0.85.0
+        version: 0.85.0(@typespec/compiler@1.15.0)
 
 packages:
 
@@ -198,34 +198,34 @@ packages:
     peerDependencies:
       '@typespec/compiler': ^1.10.0
 
-  '@typespec/compiler@1.14.0':
-    resolution: {integrity: sha512-RRN0LGVDlonG/IbB2b4mvRjdCo6LywwB9/J8lOp6UaH7vtaFnKe5FL+rpxhof4rXx/zI/4OWnQO6c01bTCz4/Q==}
+  '@typespec/compiler@1.15.0':
+    resolution: {integrity: sha512-NbCIRAIzyozchlSaGPVuyV43bC+y+OpXYCuT+8M8kt35Ln9zWzLFcIt7irofQ5QUXBZrHsBFpI5fTOFdCGeWCA==}
     engines: {node: '>=22.0.0'}
     hasBin: true
 
-  '@typespec/http@1.14.0':
-    resolution: {integrity: sha512-W+heCzu8K63AVcoX8MachVWaRxSAMFWOI1yBTc2Kq8QHaJeDiLL5JbU8VfTZ4tL/6EoGSdKfIT5ZNRW7oVCzhg==}
+  '@typespec/http@1.15.0':
+    resolution: {integrity: sha512-LNyzYHyX3C0xyQQ262jhvIaVzTn7DqiDB2gz45w1m6ngJH9ArGU8XjO3o7PaZkl/nuB5MTpImnsXpHIV1rbi4Q==}
     engines: {node: '>=22.0.0'}
     peerDependencies:
-      '@typespec/compiler': ^1.14.0
-      '@typespec/streams': ^0.84.0
+      '@typespec/compiler': ^1.15.0
+      '@typespec/streams': ^0.85.0
     peerDependenciesMeta:
       '@typespec/streams':
         optional: true
 
-  '@typespec/openapi3@1.14.0':
-    resolution: {integrity: sha512-14wjep65fvxWQHObYMaT2zISzwfdkArQ2SPkM7+t5pvAWMwKn4dnv7rSP4QRvxqjaiLsQAz7GT1SS8DaX9BhgA==}
+  '@typespec/openapi3@1.15.0':
+    resolution: {integrity: sha512-Gc6OjBiAtPo3ohlkrDxQKt8+xdeR54tC+Cgu3YLlxUxrWHWYOfWQXzp4NX+sraiFjF6kX7t0G1A1kY7rgy73qw==}
     engines: {node: '>=22.0.0'}
     hasBin: true
     peerDependencies:
-      '@typespec/compiler': ^1.14.0
-      '@typespec/events': ^0.84.0
-      '@typespec/http': ^1.14.0
-      '@typespec/json-schema': ^1.14.0
-      '@typespec/openapi': ^1.14.0
-      '@typespec/sse': ^0.84.0
-      '@typespec/streams': ^0.84.0
-      '@typespec/versioning': ^0.84.0
+      '@typespec/compiler': ^1.15.0
+      '@typespec/events': ^0.85.0
+      '@typespec/http': ^1.15.0
+      '@typespec/json-schema': ^1.15.0
+      '@typespec/openapi': ^1.15.0
+      '@typespec/sse': ^0.85.0
+      '@typespec/streams': ^0.85.0
+      '@typespec/versioning': ^0.85.0
       '@typespec/xml': '*'
     peerDependenciesMeta:
       '@typespec/events':
@@ -241,18 +241,18 @@ packages:
       '@typespec/xml':
         optional: true
 
-  '@typespec/openapi@1.14.0':
-    resolution: {integrity: sha512-KL7kImPhCXRmxpHVt1k7TWaa4bb3NbSeUx2rxyxeq7lYZFllI6/NYRCTOI/5JOrbElWmmSxrajU9K9IAKI6PkQ==}
+  '@typespec/openapi@1.15.0':
+    resolution: {integrity: sha512-lHd3H5W23KOIGKyBPKpBLPHVOxcxuvqOBXGqlyPvGmHDgmD74mrUtHWxNoGx+QQESjx4tS8Tu6URNQBU6y6Q1Q==}
     engines: {node: '>=22.0.0'}
     peerDependencies:
-      '@typespec/compiler': ^1.14.0
-      '@typespec/http': ^1.14.0
+      '@typespec/compiler': ^1.15.0
+      '@typespec/http': ^1.15.0
 
-  '@typespec/versioning@0.84.0':
-    resolution: {integrity: sha512-ZoDasTDj4z0mgFK+0cJL2+7DduCaTjvICHL2nQ/RBWc7nLgObaIYCjvXLno8WneDXnpxCAr7larN4/nlHEv9fg==}
+  '@typespec/versioning@0.85.0':
+    resolution: {integrity: sha512-8qIbWBnIWor3p9DFzcVz4xU4YK6PFgMia4+IDczhb5G4J9bYquK9gJSFNPfoF86Foq9nHad83swX25kxRiS6Jw==}
     engines: {node: '>=22.0.0'}
     peerDependencies:
-      '@typespec/compiler': ^1.14.0
+      '@typespec/compiler': ^1.15.0
 
   ajv-draft-04@1.0.0:
     resolution: {integrity: sha512-mv00Te6nmYbRp5DCwclxtt7yV/joXJPGS7nM+97GdxvuttCOfgI3K4U25zboyeX0O+myI8ERluxQe5wljMmVIw==}
@@ -381,8 +381,8 @@ packages:
   picocolors@1.1.1:
     resolution: {integrity: sha512-xceH2snhtb5M9liqDsmEw56le376mTZkEX/jEb/RxNFyegNul7eNslCXP9FDj/Lcu0X8KEyMceP2ntpaHrDEVA==}
 
-  prettier@3.8.1:
-    resolution: {integrity: sha512-UOnG6LftzbdaHZcKoPFtOcCKztrQ57WkHDeRD9t/PTQtmT0NHSeWWepj6pS0z/N7+08BHFDQVUrfmfMRcZwbMg==}
+  prettier@3.9.6:
+    resolution: {integrity: sha512-OpN0zzVdiaiAhxpuuj5efpIS4sY9j7bY6uR5mnj5yPzGkdkjNKSJeUThPb60Jw29QuAZgA4o+/iB49kFiaBX6g==}
     engines: {node: '>=14'}
     hasBin: true
 
@@ -597,11 +597,11 @@ snapshots:
     dependencies:
       '@scalar/openapi-types': 0.9.1
 
-  '@typespec/asset-emitter@0.79.1(@typespec/compiler@1.14.0)':
+  '@typespec/asset-emitter@0.79.1(@typespec/compiler@1.15.0)':
     dependencies:
-      '@typespec/compiler': 1.14.0
+      '@typespec/compiler': 1.15.0
 
-  '@typespec/compiler@1.14.0':
+  '@typespec/compiler@1.15.0':
     dependencies:
       '@babel/code-frame': 7.29.0
       '@inquirer/prompts': 8.4.1
@@ -611,7 +611,7 @@ snapshots:
       is-unicode-supported: 2.1.0
       mustache: 4.2.0
       picocolors: 1.1.1
-      prettier: 3.8.1
+      prettier: 3.9.6
       semver: 7.7.4
       tar: 7.5.22
       temporal-polyfill: 1.0.1
@@ -622,31 +622,31 @@ snapshots:
     transitivePeerDependencies:
       - '@types/node'
 
-  '@typespec/http@1.14.0(@typespec/compiler@1.14.0)':
+  '@typespec/http@1.15.0(@typespec/compiler@1.15.0)':
     dependencies:
-      '@typespec/compiler': 1.14.0
+      '@typespec/compiler': 1.15.0
 
-  '@typespec/openapi3@1.14.0(@typespec/compiler@1.14.0)(@typespec/http@1.14.0(@typespec/compiler@1.14.0))(@typespec/openapi@1.14.0(@typespec/compiler@1.14.0)(@typespec/http@1.14.0(@typespec/compiler@1.14.0)))(@typespec/versioning@0.84.0(@typespec/compiler@1.14.0))':
+  '@typespec/openapi3@1.15.0(@typespec/compiler@1.15.0)(@typespec/http@1.15.0(@typespec/compiler@1.15.0))(@typespec/openapi@1.15.0(@typespec/compiler@1.15.0)(@typespec/http@1.15.0(@typespec/compiler@1.15.0)))(@typespec/versioning@0.85.0(@typespec/compiler@1.15.0))':
     dependencies:
       '@scalar/json-magic': 0.12.16
       '@scalar/openapi-parser': 0.28.7
       '@scalar/openapi-types': 0.9.1
-      '@typespec/asset-emitter': 0.79.1(@typespec/compiler@1.14.0)
-      '@typespec/compiler': 1.14.0
-      '@typespec/http': 1.14.0(@typespec/compiler@1.14.0)
-      '@typespec/openapi': 1.14.0(@typespec/compiler@1.14.0)(@typespec/http@1.14.0(@typespec/compiler@1.14.0))
+      '@typespec/asset-emitter': 0.79.1(@typespec/compiler@1.15.0)
+      '@typespec/compiler': 1.15.0
+      '@typespec/http': 1.15.0(@typespec/compiler@1.15.0)
+      '@typespec/openapi': 1.15.0(@typespec/compiler@1.15.0)(@typespec/http@1.15.0(@typespec/compiler@1.15.0))
       yaml: 2.8.3
     optionalDependencies:
-      '@typespec/versioning': 0.84.0(@typespec/compiler@1.14.0)
+      '@typespec/versioning': 0.85.0(@typespec/compiler@1.15.0)
 
-  '@typespec/openapi@1.14.0(@typespec/compiler@1.14.0)(@typespec/http@1.14.0(@typespec/compiler@1.14.0))':
+  '@typespec/openapi@1.15.0(@typespec/compiler@1.15.0)(@typespec/http@1.15.0(@typespec/compiler@1.15.0))':
     dependencies:
-      '@typespec/compiler': 1.14.0
-      '@typespec/http': 1.14.0(@typespec/compiler@1.14.0)
+      '@typespec/compiler': 1.15.0
+      '@typespec/http': 1.15.0(@typespec/compiler@1.15.0)
 
-  '@typespec/versioning@0.84.0(@typespec/compiler@1.14.0)':
+  '@typespec/versioning@0.85.0(@typespec/compiler@1.15.0)':
     dependencies:
-      '@typespec/compiler': 1.14.0
+      '@typespec/compiler': 1.15.0
 
   ajv-draft-04@1.0.0(ajv@8.18.0):
     optionalDependencies:
@@ -737,7 +737,7 @@ snapshots:
 
   picocolors@1.1.1: {}
 
-  prettier@3.8.1: {}
+  prettier@3.9.6: {}
 
   require-from-string@2.0.2: {}
 
