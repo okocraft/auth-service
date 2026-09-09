@@ -1,6 +1,6 @@
 module github.com/okocraft/auth-service
 
-go 1.26
+go 1.26.0
 
 require (
 	github.com/Siroshun09/go-httplib v0.6.0
@@ -9,13 +9,13 @@ require (
 	github.com/Siroshun09/serrors/v2 v2.0.0
 	github.com/go-chi/chi/v5 v5.3.2
 	github.com/go-chi/cors v1.2.2
-	github.com/go-sql-driver/mysql v1.10.0
+	github.com/go-sql-driver/mysql v1.10.1
 	github.com/gofrs/uuid/v5 v5.5.1
 	github.com/golang-jwt/jwt/v5 v5.3.1
 	github.com/oapi-codegen/runtime v1.7.0
 	github.com/okocraft/authlib v0.1.0
 	github.com/stretchr/testify v1.12.1
-	golang.org/x/oauth2 v0.36.0
+	golang.org/x/oauth2 v0.37.0
 )
 
 require (
