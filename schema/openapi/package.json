@@ -4,7 +4,7 @@
   "private": true,
   "author": "Siroshun09",
   "license": "Apache-2.0",
-  "packageManager": "pnpm@12.3.4",
+  "packageManager": "pnpm@12.4.0",
   "scripts": {
     "gen": "pnpm run gen:format && pnpm run gen:schema && pnpm run gen:copy",
     "gen:format": "tsp format \"**/*.tsp\"",
@@ -12,10 +12,10 @@
     "gen:copy": "node -e \"require('fs').copyFileSync('./tsp-output/@typespec/openapi3/openapi.yaml', 'openapi.yaml')\""
   },
   "devDependencies": {
-    "@typespec/compiler": "1.15.0",
-    "@typespec/http": "1.15.0",
-    "@typespec/openapi": "1.15.0",
-    "@typespec/openapi3": "1.15.0",
-    "@typespec/versioning": "0.85.0"
+    "@typespec/compiler": "1.16.0",
+    "@typespec/http": "1.16.0",
+    "@typespec/openapi": "1.16.0",
+    "@typespec/openapi3": "1.16.0",
+    "@typespec/versioning": "0.86.0"
   }
 }
