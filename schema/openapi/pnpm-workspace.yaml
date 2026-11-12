@@ -1,2 +1,4 @@
+minimumReleaseAge: 10080
+
 overrides:
   undici@<7.30.1: 8.12.3
